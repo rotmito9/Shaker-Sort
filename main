@@ -1,0 +1,134 @@
+##
+## **************************
+## Jonathan Xu (20941295)
+## CS 116 Summer 2022
+## Assignment 08, Problem 2
+## **************************
+##
+
+import check
+
+def swap(L, p1, p2):
+  '''
+  consumes a list of integers: [L], and two positions: [p1], [p2] and mutates
+  the list so that the two positions are switched
+  
+  Effects:
+  Mutates L
+  
+  swap: (listof Int) Nat Nat -> None
+  '''
+  L[p1], L[p2] = L[p2], L[p1]
+
+def shaker_sort(L):
+  '''
+  consumes a list of integers L, returns None and mutates L so that the list is 
+  in sorted order using shaker Sort
+  
+  Effects:
+  Mutates L
+  Prints to screen
+  
+  shaker_sort: (listof Int) -> None
+  
+  Examples:
+  L = [248754, 201, 10]
+  shaker_sort(L) => None
+  the list L is mutated to [10, 201, 248754] and the following is printed:
+  [201, 10, 248754]
+  [10, 201, 248754]
+  [10, 201, 248754]
+  
+  L = [-4, 3, 2, 1]
+  shaker_sort(L) => None
+  the list L is mutated to [-4, 1, 2, 3] and the following is printed:
+  [-4, 2, 1, 3]
+  [-4, 1, 2, 3]
+  [-4, 1, 2, 3]
+  
+  L = []
+  shaker_sort(L) => None
+  print nothing
+  '''
+  if L == []:
+    return
+  
+  is_swapped = True
+  
+  while(is_swapped == True):
+    is_swapped = False
+    
+    for i in range(len(L) - 1):
+      if L[i] > L[i + 1]:
+        swap(L, i, i + 1)
+        is_swapped = True
+        
+    print(L)
+    
+    if is_swapped == False:
+      return
+    
+    is_swapped = False
+        
+    for k in range(len(L) - 1, 0, -1):
+      if L[k] < L[k - 1]:
+        swap(L, k, k - 1)
+        is_swapped = True
+        
+    print(L)
+    
+  ##print(L)
+##Examples
+L = [-4, 3, 2, 1]
+check.set_print_exact("[-4, 2, 1, 3]","[-4, 1, 2, 3]","[-4, 1, 2, 3]")
+check.expect("Markus Basic Test", shaker_sort(L), None)
+check.expect("Markus Basic Test - mutation", L, [-4, 1, 2, 3])
+
+L = [248754, 201, 10]
+check.set_print_exact("[201, 10, 248754]", 
+                      "[10, 201, 248754]",
+                      "[10, 201, 248754]")
+check.expect("Example 1", shaker_sort(L), None)
+check.expect("Example 1 Mutation", L, [10, 201, 248754])
+
+L = []
+check.set_print_exact("")
+check.expect("Example 2", shaker_sort(L), None)
+check.expect("Example 2 Mutation", L, [])
+
+
+##Tests:
+L = []
+check.set_print_exact("")
+check.expect("Empty Case", shaker_sort(L), None)
+check.expect("Empty Case Mutation", L, [])
+
+L = [1]
+check.set_print_exact("[1]")
+check.expect("Small Number Test", shaker_sort(L), None)
+check.expect("Small Number Test Mutation", L, [1])
+
+L = [-5, -2, -1, -3, -7, -9]
+check.set_print_exact("[-5, -2, -3, -7, -9, -1]", 
+                      "[-9, -5, -2, -3, -7, -1]",
+                      "[-9, -5, -3, -7, -2, -1]", 
+                      "[-9, -7, -5, -3, -2, -1]",
+                      "[-9, -7, -5, -3, -2, -1]")
+check.expect("Negative Test", shaker_sort(L), None)
+check.expect("Negative Test Mutation", L, [-9, -7, -5, -3, -2, -1])
+
+L = [4592840, 142084, 3958, 12471924, 24792474, 294792479]
+check.set_print_exact("[142084, 3958, 4592840, 12471924, 24792474, 294792479]",
+                      "[3958, 142084, 4592840, 12471924, 24792474, 294792479]",
+                      "[3958, 142084, 4592840, 12471924, 24792474, 294792479]")
+check.expect("Big Number Test", shaker_sort(L), None)
+check.expect("Big Number Test Mutation", L, 
+              [3958, 142084, 4592840, 12471924, 24792474, 294792479])
+              
+L = [15, 81, 2, 9, 72]
+check.set_print_exact("[15, 2, 9, 72, 81]",
+                      "[2, 15, 9, 72, 81]",
+                      "[2, 9, 15, 72, 81]",
+                      "[2, 9, 15, 72, 81]")
+check.expect("Typical Values Test", shaker_sort(L), None)
+check.expect("Typical Values Test Mutation", L, [2, 9, 15, 72, 81])
